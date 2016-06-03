@@ -124,7 +124,7 @@ describe Article do
       let(:article_with_invalid_url) do
         Article.new({
           "title" => title,
-          "url" => "invalid url",
+          "url" => "invalid URL",
           "description" => description
         })
       end

@@ -1,3 +1,5 @@
+require 'uri'
+
 class Article
   attr_reader :title, :url, :description, :errors
 
@@ -9,20 +11,58 @@ class Article
   end
 
   def self.all
-    salami_array = []
     articles_all = db_connection { |conn| conn.exec("SELECT title, url, description FROM articles") }
-    articles_all.each do |article|
-      salami_array << Article.new(article)
+    articles_all.map do |article|
+       Article.new(article)
     end
-    salami_array
   end
 
   def valid?
-    if title == "" || url == "" || description == ""
-      @errors << "Please completely fill out form"
-      false
+    form_filled?
+    url_nil?
+    url_duplicate?
+    long_enough?
+    if @errors.empty?
+      return true
     else
-      true
+      return false
     end
   end
+
+  def form_filled?
+    if title == "" || url == "" || description == ""
+      @errors << "Please completely fill out form"
+    end
+  end
+
+  def url_nil?
+    url_test = @url =~ URI::regexp
+    if @url == ""
+      nil
+    elsif url_test.nil?
+      @errors << "Invalid URL"
+    end
+  end
+
+  def url_duplicate?
+    all_urls = []
+    db_connection do |conn|
+      all_urls = conn.exec_params("SELECT url FROM articles").to_a
+    end
+
+    all_urls.each do |url|
+      if url.has_value?(@url)
+        @errors << "Article with same url already submitted"
+      end
+    end
+  end
+
+  def long_enough?
+    if @description == ""
+      nil
+    elsif @description.length < 20
+      @errors << "Description must be at least 20 characters long"
+    end
+  end
+
 end
