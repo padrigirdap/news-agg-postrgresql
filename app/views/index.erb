@@ -1,0 +1,9 @@
+      <% @articles.each do |article| %>
+      <ul>
+        <li><%= "Title: #{article["title"]}" %></li>
+        <li> <%= "URL: " %><a href="<%= article["url"] %>"><%= "#{article["url"]}" %></a></li>
+        <li><%= "Article Description: #{article["description"]}" %> </li>
+      </ul>
+      <% end %>
+
+    <a href="/articles/new">Submit New Article!</a>

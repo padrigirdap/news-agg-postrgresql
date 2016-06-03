@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+  <head>
+    <title>News Aggregator</title>
+  </head>
+
+  <body>
+    <form action="/articles/new" method="post">
+  <label for="articles">Title:</label>
+  <input type="text" id="articles" name="article_title" required>
+
+  <label for="url">URL:</label>
+  <input type="url" id="articles" name="url" required>
+
+  <label for="description">Description:</label>
+  <input type="text" id="articles" name="description" minlength="20" required>
+
+  <input type="submit">
+</form>
+
+  </body>
+</html>
