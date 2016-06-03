@@ -24,7 +24,7 @@ end
 
 
 get "/articles" do
-  @articles = db_connection { |conn| conn.exec("SELECT title, url, description FROM articles") }
+  @articles = Article.all
   erb :index
 end
 
@@ -33,13 +33,12 @@ get "/articles/new" do
 end
 
 post "/articles/new" do
-  title = params['title']
-  url = params['url']
-  description = params['description']
-
-  db_connection do |conn|
-    conn.exec_params("INSERT INTO articles (title, url, description) VALUES ($1, $2, $3)", [title, url, description])
+  @new_art = Article.new(params)
+  if !@new_art.valid?
+    @errors = @new_art.errors
+    erb :form
+  else
+    @new_art.save
+    redirect "/articles"
   end
-
-  redirect "/articles"
 end

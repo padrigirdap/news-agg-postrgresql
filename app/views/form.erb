@@ -1,14 +1,17 @@
 
+<% if @errors %>
+<h2>Error! <%= @errors %> </h2>
+<% end %>
 
 <form action="/articles/new" method="post">
   <label for="title">Title:</label>
-  <input type="text" id="title" name="title" required>
+  <input type="text" id="title" name="title" value="params["title"]">
 
   <label for="url">URL:</label>
-  <input type="url" id="url" name="url" required>
+  <input type="text" id="url" name="url" value="params["url"]">
 
   <label for="description">Description:</label>
-  <input type="text" id="description" name="description" required>
+  <input type="text" id="description" name="description" value="params["description"]">
 
   <input type="submit" value="Submit">
 </form>

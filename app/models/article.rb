@@ -65,4 +65,14 @@ class Article
     end
   end
 
+  def save
+    if valid?
+      db_connection do |conn|
+        conn.exec_params("INSERT INTO articles (title, url, description) VALUES ($1, $2, $3)", [@title, @url, @description])
+      end
+      true
+    else
+      false
+    end
+  end
 end

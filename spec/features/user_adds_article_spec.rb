@@ -11,14 +11,13 @@ feature "user adds article" do
     fill_in "URL", with: url
     fill_in "Description", with: description
     click_button "Submit"
-
     expect(page).to have_current_path("/articles")
     expect(page).to have_content(title)
     expect(page).to have_css("a[href='#{url}']")
     expect(page).to have_content(description)
   end
 
-  xcontext "invalid form submission" do
+  context "invalid form submission" do
     scenario "form not filled out completely" do
       visit "/articles/new"
       fill_in "Title", with: title
